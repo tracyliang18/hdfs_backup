@@ -1,0 +1,59 @@
+{
+    "source" : {
+        "tracking" : {
+            "xtx" : {
+		"hdfs-src" : "/production/datas/tracking/xtx",
+		"remote" : ""
+		},
+            "vpc" : {
+		"hdfs-src" : "/production/datas/tracking/vpc",
+		"remote" : ""
+		}
+        }, 
+
+        "comments" : {
+            "hdfs-src" : "/production/datas/comments",
+            "remote" : ""
+        }
+    },
+
+    "datas" : {
+        "tracking" : {
+            "xtx" : {
+                "hdfs-src" : "/production/datas/tracking/xtx", 
+                "remote" : ""
+            },
+            "vpc" : {
+                "hdfs-src" : "/production/datas/tracking/vpc",
+                "remote" : ""
+            }
+        },
+
+        "videoevent" : {
+            "hdfs-src" : "/production/datas/videoevent",
+            "remote" : ""
+        },
+        "video_learn_active" : { 
+            "hdfs-src" : "/production/datas/video_learn_active",
+            "remote" : ""
+        },
+        
+        "video_study_export" : { 
+            "hdfs-src" : "/production/datas/video_study_export",
+            "remote" : ""
+        },
+        
+        "videoaction" :  {
+            "hdfs-src" : "/production/datas/videoaction",
+            "remote" : ""
+        }
+    },
+
+    "test" : {
+        "hdfs-src" : "/user/hive/external/tw_tr_datas_xtx_d",
+        "remote" : "hdfs@10.0.0.172:/home/ubuntu/backup/hdfs/test"
+    }
+
+}
+
+
