@@ -16,6 +16,9 @@ parser.add_option("-c", "--conf", dest="conf", default="./conf.json",
 parser.add_option("-t", "--type", dest="backup_type", default=None,
                 help="backup data type, should be in XX.XXX.XX format, such as source.tracking.xtx", metavar="AAA.BBB.CCC")
 
+parser.add_option("-d", "--delete", action="store_true", dest="gen_delete_script",default=False,
+                help="switch on generate delte script")
+
 from backup import backup_given_date 
 
 
@@ -26,6 +29,16 @@ date_re = re.compile("^\d{4}-\d{2}-\d{2}$")
 from datetime import datetime,timedelta
 
 CONF_FILE="./conf.json"
+def loop_through_dict(prev_key,res, conf):
+    if "hdfs-src" in conf and "remote" in conf:
+        res.append((prev_key,conf))
+        return
+
+    for key in conf:
+        loop_through_dict(prev_key +"." + key, res, conf[key])
+    
+
+
 def main():
     (options, args) = parser.parse_args()
 
@@ -33,11 +46,12 @@ def main():
     with open(options.conf) as f:
 	conf = json.load(f)
     #print conf
+    print "----------backup_type info ----"
     if not options.backup_type:
-	print "backup type not specified, exit"
-	exit(-1)
+	    print "backup type not specified, exit"
+	    exit(-1)
     else:
-        backup_type = None
+        backup_type = {}
         try:
             key_strings = options.backup_type.split('.')
             expression = "conf[\""+ "\"][\"".join(key_strings)  + "\"]" 
@@ -45,14 +59,20 @@ def main():
             backup_type = eval(expression)
         except:
             print "backup_type parse error"
-        
-        if not backup_type:
-            print "backup_type error,exit"
+       
+        backup_list = []
+        loop_through_dict(options.backup_type,backup_list, backup_type)
+
+        if len(backup_list) == 0:
+            print "exit"
             exit(-1)
 
-	if "hdfs-src" not in backup_type or "remote" not in backup_type:
-            print "hdfs-src and remote must in the {0}'s config".format(options.backup_type)	
-    
+        print "{0} backup type included.".format(len(backup_list))
+        for t in backup_list:
+            print "\t{0}".format(t[0])
+
+        print "-------------------------------"
+
     #parse keep 
     if options.keep:
     	keep = int(options.keep)
@@ -96,7 +116,13 @@ def main():
     #print args
 
     #backup_given_date(	
-    backup_given_date(options.backup_type, backup_type["hdfs-src"], backup_type["remote"], start_date_str, end_date_str)
+    for e in backup_list:
+        backup_type_str = e[0]
+        backup_type = e[1]
+        print "backuping ",backup_type_str,"----------------"
+        #print "\t",backup_type
+        backup_given_date(backup_type_str, backup_type["hdfs-src"], backup_type["remote"], start_date_str, end_date_str, options.gen_delete_script)
+        print "---------------------------------------------" 
 
 
 if __name__ == "__main__":
