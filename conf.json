@@ -1,14 +1,8 @@
 {
     "source" : {
         "tracking" : {
-            "xtx" : {
-		"hdfs-src" : "/production/datas/tracking/xtx",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/tracking/xtx"
-		},
-            "vpc" : {
-		"hdfs-src" : "/production/datas/tracking/vpc",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/tracking/vpc"
-		}
+            "hdfs-src" : "/production/datas/tracking/",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/tracking/"
         }, 
 
         "comments" : {
@@ -18,160 +12,154 @@
     },
 
     "datas" : {
-	"DailyJob" : {
-		"hdfs-src" : "/production/datas/DailyJob",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/DailyJob"
-	},
-	"about_enroll" : {
-		"hdfs-src" : "/production/datas/about_enroll",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/about_enroll"		
-	},
-	"comment_active_export" : {
-		"hdfs-src" : "/production/datas/comment_active_export",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/comment_active_export"
-	},
-	"comment_interaction" : {
-		"hdfs-src" : "/production/datas/comment_interaction",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/comment_interaction"
-	},
-	"count_enrollment" : {
-		"hdfs-src" : "/production/datas/count_enrollment",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/count_enrollment"
-	},
-	"course_active_export" : {
-		"hdfs-src" : "/production/datas/course_active_export",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/course_active_export"
-	},
-	"course_grade" : {
-		"hdfs-src" : "/production/datas/course_grade",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/course_grade"
-	},
-	"course_struct" : {
-		"hdfs-src" : "/production/datas/course_struct",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/course_struct"
-	},
-	"courseware_studentmoduleDay" : {
-		"hdfs-src" : "/production/datas/courseware_studentmoduleDay",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/courseware_studentmoduleDay"
-	},
-	"enrollment_action" : {
-		"hdfs-src" : "/production/datas/enrollment_action",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/enrollment_action"
-	},
-	"enrollment_export" : {
-		"hdfs-src" : "/production/datas/enrollment_export",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/enrollment_export"
-	},
-	"exam_grade" : {
-		"hdfs-src" : "/production/datas/exam_grade",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/exam_grade"
-	},
-
-	"exam_grade_aggs" : {
-		"hdfs-src" : "/production/datas/exam_grade_aggs",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/exam_grade_aggs"
-	},
-
-	"export_data" : {
-		"hdfs-src" : "/production/datas/export_data",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/export_data"
-	}, 
-
-	"grade_distribution_export" : {
-		"hdfs-src" : "/production/datas/grade_distribution_export",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/grade_distribution_export"
-	},
-	"html_view" : {
-		"hdfs-src" : "/production/datas/html_view",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/html_view"	
-	},
-	"learn" : {
-		"hdfs-src" : "/production/datas/learn",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/learn"
-	},
-	"learn_cnt" : {
-		"hdfs-src" : "/production/datas/learn_cnt",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/learn_cnt"
-	},
-	"outlink" : {
-		"hdfs-src" : "/production/datas/outlink",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/outlink"
-	},
-	"pdf_view" : {
-		"hdfs-src" : "/production/datas/pdf_view",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/pdf_view"
-	},
-	"problem" : {
-		"hdfs-src" : "/production/datas/problem",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/problem"
-	},
-	"problem_info" : {
-		"hdfs-src" : "/production/datas/problem_info",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/problem_info"
-	},
-	"problem_info_new" : {
-		"hdfs-src" : "/production/datas/problem_info_new",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/problem_info_new"
-	},
-	"sort_info" : {
-		"hdfs-src" : "/production/datas/sort_info",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/sort_info"
-	},
-	"student_grade" : {
-		"hdfs-src" : "/production/datas/student_grade",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/student_grade"
-	},
-	"ta_activity_export" : {
-		"hdfs-src" : "/production/datas/ta_activity_export",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/ta_activity_export"
-	},
-	
-        "tracking" : {
-            "xtx" : {
-		"hdfs-src" : "/production/datas/tracking/xtx",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/tracking/xtx"
-            },
-            "vpc" : {
-		"hdfs-src" : "/production/datas/tracking/vpc",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/tracking/vpc"
-            }
+        "DailyJob" : {
+            "hdfs-src" : "/production/datas/DailyJob",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/DailyJob"
+        },
+        "about_enroll" : {
+            "hdfs-src" : "/production/datas/about_enroll",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/about_enroll"		
+        },
+        "comment_active_export" : {
+            "hdfs-src" : "/production/datas/comment_active_export",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/comment_active_export"
+        },
+        "comment_interaction" : {
+            "hdfs-src" : "/production/datas/comment_interaction",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/comment_interaction"
+        },
+        "count_enrollment" : {
+            "hdfs-src" : "/production/datas/count_enrollment",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/count_enrollment"
+        },
+        "course_active_export" : {
+            "hdfs-src" : "/production/datas/course_active_export",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/course_active_export"
+        },
+        "course_grade" : {
+            "hdfs-src" : "/production/datas/course_grade",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/course_grade"
+        },
+        "course_struct" : {
+            "hdfs-src" : "/production/datas/course_struct",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/course_struct"
+        },
+        "courseware_studentmoduleDay" : {
+            "hdfs-src" : "/production/datas/courseware_studentmoduleDay",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/courseware_studentmoduleDay"
+        },
+        "enrollment_action" : {
+            "hdfs-src" : "/production/datas/enrollment_action",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/enrollment_action"
+        },
+        "enrollment_export" : {
+            "hdfs-src" : "/production/datas/enrollment_export",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/enrollment_export"
+        },
+        "exam_grade" : {
+            "hdfs-src" : "/production/datas/exam_grade",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/exam_grade"
         },
 
-	"tracking-new" : {
-		"hdfs-src" : "/production/datas/tracking-new",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/tracking-new"
-	},
+        "exam_grade_aggs" : {
+            "hdfs-src" : "/production/datas/exam_grade_aggs",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/exam_grade_aggs"
+        },
 
-	"unenrollment" : {
-		"hdfs-src" : "/production/datas/unenrollment",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/unenrollment"
-	},
+        "export_data" : {
+            "hdfs-src" : "/production/datas/export_data",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/export_data"
+        }, 
 
-	"video_learn_active" : {
-		"hdfs-src" : "/production/datas/",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/"
-	},
+        "grade_distribution_export" : {
+            "hdfs-src" : "/production/datas/grade_distribution_export",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/grade_distribution_export"
+        },
+        "html_view" : {
+            "hdfs-src" : "/production/datas/html_view",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/html_view"	
+        },
+        "learn" : {
+            "hdfs-src" : "/production/datas/learn",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/learn"
+        },
+        "learn_cnt" : {
+            "hdfs-src" : "/production/datas/learn_cnt",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/learn_cnt"
+        },
+        "outlink" : {
+            "hdfs-src" : "/production/datas/outlink",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/outlink"
+        },
+        "pdf_view" : {
+            "hdfs-src" : "/production/datas/pdf_view",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/pdf_view"
+        },
+        "problem" : {
+            "hdfs-src" : "/production/datas/problem",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/problem"
+        },
+        "problem_info" : {
+            "hdfs-src" : "/production/datas/problem_info",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/problem_info"
+        },
+        "problem_info_new" : {
+            "hdfs-src" : "/production/datas/problem_info_new",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/problem_info_new"
+        },
+        "sort_info" : {
+            "hdfs-src" : "/production/datas/sort_info",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/sort_info"
+        },
+        "student_grade" : {
+            "hdfs-src" : "/production/datas/student_grade",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/student_grade"
+        },
+        "ta_activity_export" : {
+            "hdfs-src" : "/production/datas/ta_activity_export",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/ta_activity_export"
+        },
+        
+        "tracking" : {
+            "hdfs-src" : "/production/datas/tracking/",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/tracking/"
+        },
 
-	"video_study_export" : {
-		"hdfs-src" : "/production/datas/video_study_export",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/video_study_export"
-	},
+        "tracking-new" : {
+            "hdfs-src" : "/production/datas/tracking-new",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/tracking-new"
+        },
 
-	"videoaction" : {
-		"hdfs-src" : "/production/datas/videoaction",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/videoaction"
-	},
+        "unenrollment" : {
+            "hdfs-src" : "/production/datas/unenrollment",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/unenrollment"
+        },
+
+        "video_learn_active" : {
+            "hdfs-src" : "/production/datas/video_learn_active",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/video_learn_active"
+        },
+
+        "video_study_export" : {
+            "hdfs-src" : "/production/datas/video_study_export",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/video_study_export"
+        },
+
+        "videoaction" : {
+            "hdfs-src" : "/production/datas/videoaction/",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/videoaction/"
+         },
 
         "videoevent" : {
-		"hdfs-src" : "/production/datas/videoevent",
-		"remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/videoevent"
+            "hdfs-src" : "/production/datas/videoevent",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas/videoevent"
         }
     },
 
 
     "test" : {
         "hdfs-src" : "/tmp/ljj/test/",
-	    "remote" : "root@10.0.0.147:/root/backup/hdfs/production/test"
+        "remote" : "root@10.0.0.147:/root/backup/hdfs/production/test"
     }
 
 }
