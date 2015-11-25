@@ -160,6 +160,17 @@
     "test" : {
         "hdfs-src" : "/tmp/ljj/test/",
         "remote" : "root@10.0.0.147:/root/backup/hdfs/production/test"
+
+    },
+
+    "test-2":{
+        "hdfs-src" : "/production/opjobs/active_account",
+        "remote":"root@10.0.0.147:/root/backup/hdfs/production/test-2"
+    },
+    
+    "opjobs" : {
+    	"hdfs-src" : "/production/opjobs",
+	"remote" : "root@10.0.0.147:/root/backup/hdfs/production/opjobs/"
     }
 
 }

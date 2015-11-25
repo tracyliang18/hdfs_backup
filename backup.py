@@ -6,7 +6,12 @@ from datetime import date,timedelta
 import datetime
 import re
 
+
+#support regex
+date_range_re=re.compile("\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}")
 date_re=re.compile("\d{4}-\d{2}-\d{2}")
+support_date_format = [date_range_re, date_re]
+
 today = datetime.datetime.now().strftime("%Y-%m-%d")
 
 def is_dir(d):
@@ -17,6 +22,7 @@ def is_dir(d):
     if d.startswith("d"):
         return True
     return False
+
 
 def containDate(d):
     """
@@ -37,13 +43,16 @@ def containDate(d):
             ftype = fields[0]
             fname = fields[-1]
             children = fname[len(root):]
-            match = date_re.search(children)
-            if match:
-                prefix = children[0:match.start()]
-                backup_item = root + children[0:match.end()]
-                if backup_item not in item_set:
-                    date_str.append((prefix,backup_item))
-                    item_set.add(backup_item)
+            #print "children",children
+            for regex in support_date_format:
+                match = regex.search(children)
+                if match:
+                    prefix = children[0:match.start()]
+                    backup_item = root + children[0:match.end()]
+                    if backup_item not in item_set:
+                        date_str.append((prefix,backup_item))
+                        item_set.add(backup_item)
+                    break
         if len(date_str) > 0:
             #print "[DEBUG] total backup item count : {0}".format(len(date_str))
             return date_str
@@ -62,17 +71,18 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
     """
         backup the sub-directorys in d which are created before end_date_str
 
-        backup_type: 备份类型,用于创建临时目录
-        src_dir : 需要备份的hdfs目录
-        remote_dir : 保存备份的远程目录
-        start_date_str : 日期,格式为%Y-%m-%d
-        end_date_str : 日期,格式为%Y-%m-%d
+        backup_type: string,备份类型,用于创建临时目录
+        src_dir : string,需要备份的hdfs目录
+        remote_dir : string,保存备份的远程目录
+        start_date_str : string,日期,格式为%Y-%m-%d
+        end_date_str : string,日期,格式为%Y-%m-%d
+        gen_delete_script : bool,是否生成删除脚本
 
     """
 
     remote_host=remote_dir.split("/")[0].strip(":")
     remote_base_dir="/" + "/".join(remote_dir.split("/")[1:]) + "/"
-    
+
 
 
     if not start_date_str:
@@ -87,7 +97,7 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
     start_date = datetime.datetime.strptime(start_date_str,"%Y-%m-%d")
     end_date = datetime.datetime.strptime(end_date_str,"%Y-%m-%d")
 
-    
+
     success_list = []
     failed_list = []
     if ret:
@@ -99,33 +109,34 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
         i = 0
         end = len(ret)
         mark = ret[0][0]
-        
+
         while i < end:
-            print ret[i][0]
+            #print ret[i][0]
             min_date = ret[i][1].rstrip("/").split("/")[-1]
             while(i < end and ret[i][0] == mark):
                 i += 1
             max_date = ret[i-1][1].rstrip("/").split("/")[-1]
             prefix_list.append((mark,min_date,max_date))
             if i < end:
-                mark = ret[i][0]    
+                mark = ret[i][0]
 
-            
+
         print "backup root dir: {0}".format(src_dir)
         print "backup {0} subdir".format(len(prefix_list))
         for e in prefix_list:
             print "\t dirname: {0}, min_date: {1}, max_date: {2}".format(e[0],e[1],e[2])
-        
+
             #print "min_date: {0}, max_date: {1}".format(ret_s,ret_e)
             #print "min_date :  {0}, max_date : {1}".format(date_re.search(ret_s).group(0), date_re.search(ret_e).group(0))
         for prefix,date_dir in ret:
             #print prefix,date_dir
             name = date_dir.rstrip("/").split("/")[-1]
-            file_date_str = date_re.search(name).group(0)
+            file_date_str = re.search("\d{4}-\d{2}-\d{2}",name).group(0)
+            #print file_date_str
             file_date = datetime.datetime.strptime(file_date_str,"%Y-%m-%d")
             #print file_date
             if file_date <= end_date and file_date >= start_date:
-                ret1 = os.system("hadoop dfs -get {src} {backup_root}/{date} 1>/dev/null ".format(src=date_dir,backup_root=backup_type,date=file_date_str))
+                ret1 = os.system("hadoop dfs -get {src} {backup_root}/{date} 1>/dev/null ".format(src=date_dir,backup_root=backup_type,date=name))
 
                 if ret1 != 0:
                     print "[ERROR] hadoop dfs get file {src} failed".format(src=date_dir)
@@ -133,17 +144,17 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
                 else:
 
                     #print "hadoop dfs -cat {src}/* 1>{backup_root}/{date} 2>/dev/null".format(src=date_dir,backup_root=backup_type,date=file_date_str)
-                    ret2 = os.system("cd {backup_root} && tar -czvf {date}.tar.gz {date} 1>/dev/null ".format(backup_root=backup_type, date=file_date_str))
+                    ret2 = os.system("cd {backup_root} && tar -czvf {date}.tar.gz {date} 1>/dev/null ".format(backup_root=backup_type, date=name))
                     if ret2 != 0:
-                        print "[ERROR] tar {backup_root}/{date}.tar.gz failed".format(backup_root=backup_type,date=file_date_str)
+                        print "[ERROR] tar {backup_root}/{date}.tar.gz failed".format(backup_root=backup_type,date=name)
 
                     else:
 
-                        ret3 = os.system("ssh {host} \"mkdir -p {base}/{prefix}\" && scp {backup_root}/{date}.tar.gz {remote}/{prefix}/ 1>/dev/null".format(host=remote_host,base=remote_base_dir,backup_root=backup_type,date=file_date_str,remote=remote_dir,prefix=prefix))
+                        ret3 = os.system("ssh {host} \"mkdir -p {base}/{prefix}\" && scp {backup_root}/{date}.tar.gz {remote}/{prefix}/ 1>/dev/null".format(host=remote_host,base=remote_base_dir,backup_root=backup_type,date=name,remote=remote_dir,prefix=prefix))
                         if ret3 != 0:
-                            print "[ERROR] scp {backup_root}/{prefix} {date}.tar.gz error".format(backup_root=backup_type,date=file_date_str,prefix=prefix)
-                os.system("rm -rf {backup_root}/{date} {backup_root}/{date}.tar.gz 1>/dev/null".format(backup_root=pwd + "/" + backup_type,date=file_date_str))
-                
+                            print "[ERROR] scp {backup_root}/{prefix} {date}.tar.gz error".format(backup_root=backup_type,date=name,prefix=prefix)
+                os.system("rm -rf {backup_root}/{date} {backup_root}/{date}.tar.gz 1>/dev/null".format(backup_root=pwd + "/" + backup_type,date=name))
+
                 if ret1 == 0 and ret2 == 0 and ret3 == 0:
                     success_list.append(date_dir)
                 else:
