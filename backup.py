@@ -14,19 +14,10 @@ support_date_format = [date_range_re, date_re]
 
 today = datetime.datetime.now().strftime("%Y-%m-%d")
 
-def is_dir(d):
-    """
-        judge whether d is directory
-    """
-
-    if d.startswith("d"):
-        return True
-    return False
-
 
 def containDate(d):
     """
-        judge whether directory d contain date-format subdir
+        judge whether directory d contain date-format subdir, and return all date-format sub-directorys or subfile in a list
     """
     if not d.endswith("/"):
         d += "/"
@@ -35,8 +26,9 @@ def containDate(d):
     if ret != 0:
         print "[ERROR] please ensure that the hdfs path {0} exists\n".format(root)
         return False
+    date_str = []
     with open("containDate.tmp") as f:
-        date_str = []
+
         item_set = set()
         for line in f:
             fields = line.strip().split()
@@ -53,13 +45,14 @@ def containDate(d):
                         date_str.append((prefix,backup_item))
                         item_set.add(backup_item)
                     break
-        if len(date_str) > 0:
-            #print "[DEBUG] total backup item count : {0}".format(len(date_str))
-            return date_str
-        else:
-            print "[ERROR] {0} doesn't include date subdir\n".format(root)
-            return False
     os.system("rm containDate.tmp")
+    if len(date_str) > 0:
+        #print "[DEBUG] total backup item count : {0}".format(len(date_str))
+        return date_str
+    else:
+        print "[ERROR] {0} doesn't include date subdir\n".format(root)
+        return False
+
 
 
 def daterange(start_date, end_date):
@@ -120,11 +113,10 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
             if i < end:
                 mark = ret[i][0]
 
-
         print "backup root dir: {0}".format(src_dir)
         print "backup {0} subdir".format(len(prefix_list))
         for e in prefix_list:
-            print "\t dirname: {0}, min_date: {1}, max_date: {2}".format(e[0],e[1],e[2])
+            print "\t dirname: {0}, min_date: {1}, max_date: {2}".format(e[0] if len(e[0])>0 else ".",e[1],e[2])
 
             #print "min_date: {0}, max_date: {1}".format(ret_s,ret_e)
             #print "min_date :  {0}, max_date : {1}".format(date_re.search(ret_s).group(0), date_re.search(ret_e).group(0))
@@ -136,7 +128,7 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
             file_date = datetime.datetime.strptime(file_date_str,"%Y-%m-%d")
             #print file_date
             if file_date <= end_date and file_date >= start_date:
-                ret1 = os.system("hadoop dfs -get {src} {backup_root}/{date} 1>/dev/null ".format(src=date_dir,backup_root=backup_type,date=name))
+                ret1 = os.system("hadoop dfs -get {src} {backup_root}/{date} 1>/dev/null 2>&1".format(src=date_dir,backup_root=backup_type,date=name))
 
                 if ret1 != 0:
                     print "[ERROR] hadoop dfs get file {src} failed".format(src=date_dir)
@@ -144,18 +136,45 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
                 else:
 
                     #print "hadoop dfs -cat {src}/* 1>{backup_root}/{date} 2>/dev/null".format(src=date_dir,backup_root=backup_type,date=file_date_str)
-                    ret2 = os.system("cd {backup_root} && tar -czvf {date}.tar.gz {date} 1>/dev/null ".format(backup_root=backup_type, date=name))
+                    ret2 = os.system("cd {backup_root} && tar -czvf {date}.tar.gz {date} 1>/dev/null 2>&1".format(backup_root=backup_type, date=name))
                     if ret2 != 0:
                         print "[ERROR] tar {backup_root}/{date}.tar.gz failed".format(backup_root=backup_type,date=name)
 
                     else:
 
+                        md5_command_ret1 = os.system("cd {backup_root} && md5sum {date}.tar.gz | awk '{{print $1}}' > {date}.md5_source_tmp".format(backup_root=backup_type,date=name))
+                        #print "cd {backup_root} && md5sum {date}.tar.gz | awk '{{print $1}}' > {date}.md5_source_tmp".format(backup_root=backup_type,date=name)
                         ret3 = os.system("ssh {host} \"mkdir -p {base}/{prefix}\" && scp {backup_root}/{date}.tar.gz {remote}/{prefix}/ 1>/dev/null".format(host=remote_host,base=remote_base_dir,backup_root=backup_type,date=name,remote=remote_dir,prefix=prefix))
+
+                        #print "ssh {host} \"md5sum {base}/{prefix}/{date}.tar.gz | awk '{{print $1}}' > /tmp/{date}.md5_remote_tmp\" && cd {backup_root} && scp {host}/tmp/md5_remote_tmp .".format(host=remote_host,base=remote_base_dir,prefix=prefix,date=name,backup_root=backup_type)
+                        md5_command_ret2 = os.system("ssh {host} \"md5sum {base}/{prefix}/{date}.tar.gz | awk '{{print $1}}' > /tmp/{date}.md5_remote_tmp\" && cd {backup_root} && scp {host}:/tmp/{date}.md5_remote_tmp ."
+                                                .format(host=remote_host,base=remote_base_dir,prefix=prefix,date=name,backup_root=backup_type))
+
+                        if md5_command_ret1 != 0:
+                            print "md5sum local file failed"
+
+                        if md5_command_ret2 != 0:
+                            print "md5sum remote file failed"
+                        ret_diff = 1
+                        if md5_command_ret1 == 0 and md5_command_ret2 == 0:
+                            try:
+                                with open("{backup_root}/{date}.md5_remote_tmp".format(backup_root=backup_type,date=name)) as f1, open("{backup_root}/{date}.md5_source_tmp".format(backup_root=backup_type,date=name)) as f2:
+                                    #print "md5"
+                                    #print f1.readlines()[0].split()[0],f2.readlines()[0].split()[0]
+                                    if f1.readlines()[0].split()[0] == f2.readlines()[0].split()[0]:
+                                        ret_diff = 0
+                            except Exception as e:
+                                print e
+                                print "diff md5 result exception"
+
+                        if ret_diff:
+                            print "[ERROR] md5sum is different between two file in {date}.tar.gz in {backup_root}".format(date=name,backup_root=backup_type)
+
                         if ret3 != 0:
                             print "[ERROR] scp {backup_root}/{prefix} {date}.tar.gz error".format(backup_root=backup_type,date=name,prefix=prefix)
                 os.system("rm -rf {backup_root}/{date} {backup_root}/{date}.tar.gz 1>/dev/null".format(backup_root=pwd + "/" + backup_type,date=name))
 
-                if ret1 == 0 and ret2 == 0 and ret3 == 0:
+                if ret1 == 0 and ret2 == 0 and ret3 == 0 and ret_diff == 0:
                     success_list.append(date_dir)
                 else:
                     failed_list.append(date_dir)
@@ -193,5 +212,3 @@ if __name__ == "__main__":
 
     #backup_given_date("xtx_tracking","/user/hive/external/tw_tr_datas_xtx_d",start_date_str="2015-11-01")
     #backup_given_date("xtx_tracking","/user/hive/external/tw_tr_datas_xtx_d",start_date_str="2015-11-01",end_date_str="2015-11-03")
-
-
