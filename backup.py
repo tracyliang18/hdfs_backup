@@ -195,7 +195,7 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
     if gen_delete_script and len(success_list) > 0:
 
         with open("delete_script_{0}_{1}.sh".format(backup_type,today),"w") as f:
-            cmd_format = "hadoop dfs -rmr -skipTrash {filename}"
+            cmd_format = "hadoop dfs -rmr {filename}"
             for fname in success_list:
                 f.write(cmd_format.format(filename=fname + "\n"))
 
