@@ -9,6 +9,16 @@
           "comments" : {
             "hdfs-src" : "/production/source/comments",
             "remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/comments"
+          },
+
+          "mobile" : {
+            "hdfs-src" : "/production/source/mobile",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/mobile"
+          },
+
+          "mysql-bak" : {
+              "hdfs-src" : "/production/source/mysql-bak",
+              "remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/msql-bak"
           }
         },
 

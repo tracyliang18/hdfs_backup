@@ -53,7 +53,7 @@ def containDate(d):
                         date_str.append((prefix,backup_item))
                         item_set.add(backup_item)
                     break
-    #os.system("rm {f}".format(f=tmp_file)
+    os.system("rm {f}".format(f=tmp_file))
     if len(date_str) > 0:
         #print "[DEBUG] total backup item count : {0}".format(len(date_str))
         return date_str
