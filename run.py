@@ -35,7 +35,8 @@ def loop_through_dict(prev_key,res, conf):
         return
 
     for key in conf:
-        loop_through_dict(prev_key +"." + key, res, conf[key])
+        if key != "hdfs-src" and key != "remote":
+            loop_through_dict(prev_key +"." + key, res, conf[key])
     
 
 

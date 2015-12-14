@@ -1,49 +1,41 @@
 {
-    "source" : {
-      "tracking" : {
-        "hdfs-src" : "/production/datas/tracking/",
-        "remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/tracking/"
-      },
+    "all" : {
+        "source" : {
+          "tracking" : {
+            "hdfs-src" : "/production/source/tracking/",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/tracking/"
+          },
 
-      "comments" : {
-        "hdfs-src" : "/production/source/comments",
-        "remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/comments"
-      }
-    },
+          "comments" : {
+            "hdfs-src" : "/production/source/comments",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/source/comments"
+          }
+        },
 
-    "datas" : {
-      "hdfs-src" : "/production/datas/",
-      "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas"
-    },
-
-    "app" : {
-      "hdfs-src" : "/production/app/",
-      "remote" : "root@10.0.0.147:/root/backup/hdfs/production/app"
-    },
+        "datas" : {
+          "hdfs-src" : "/production/datas/",
+          "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas",
+        },
 
 
-    "app" : {
-      "hdfs-src" : "/production/interaction/",
-      "remote" : "root@10.0.0.147:/root/backup/hdfs/production/interaction"
-    },
+        "app" : {
+          "hdfs-src" : "/production/app/",
+          "remote" : "root@10.0.0.147:/root/backup/hdfs/production/app"
+        },
 
-    "exceptions" : {
-        "hdfs-src" : "/production/exceptions/",
-        "remote" : "root@10.0.0.147:/root/backup/hdfs/production/exceptions"
-    },
 
-    "opjobs" : {
-      "hdfs-src" : "/production/opjobs",
-      "remote" : "root@10.0.0.147:/root/backup/hdfs/production/opjobs/"
-    },
+        "interaction" : {
+          "hdfs-src" : "/production/interaction/",
+          "remote" : "root@10.0.0.147:/root/backup/hdfs/production/interaction"
+        },
 
-    "test" : {
-        "hdfs-src" : "/tmp/ljj/test/",
-        "remote" : "root@10.0.0.147:/root/backup/hdfs/production/test"
-    },
+        "exceptions" : {
+            "hdfs-src" : "/production/exceptions/",
+            "remote" : "root@10.0.0.147:/root/backup/hdfs/production/exceptions"
+        },
 
-    "test-2":{
-        "hdfs-src" : "/production/opjobs/active_account",
-        "remote":"root@10.0.0.147:/root/backup/hdfs/production/test-2"
-    }
+        "opjobs" : {
+          "hdfs-src" : "/production/opjobs",
+          "remote" : "root@10.0.0.147:/root/backup/hdfs/production/opjobs/"
+        }
 }

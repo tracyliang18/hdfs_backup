@@ -19,15 +19,17 @@ def containDate(d):
     """
         judge whether directory d contain date-format subdir, and return all date-format sub-directorys or subfile in a list
     """
+    containDate.index += 1
+    tmp_file = "containDate.tmp" + str(containDate.index) 
     if not d.endswith("/"):
         d += "/"
     root = d
-    ret = os.system("hadoop dfs -lsr {0} > {1} 2>/dev/null".format(root,"containDate.tmp"))
+    ret = os.system("hadoop dfs -lsr {0} > {1} 2>/dev/null".format(root,tmp_file))
     if ret != 0:
         print "[ERROR] please ensure that the hdfs path {0} exists\n".format(root)
         return False
     date_str = []
-    with open("containDate.tmp") as f:
+    with open(tmp_file) as f:
 
         item_set = set()
         for line in f:
@@ -39,13 +41,19 @@ def containDate(d):
             for regex in support_date_format:
                 match = regex.search(children)
                 if match:
-                    prefix = children[0:match.start()]
-                    backup_item = root + children[0:match.end()]
+                    prefix_end = children.rfind("/",0,match.start())
+                    if prefix_end == -1:
+                        prefix_end = 0
+                    prefix = children[0:prefix_end]
+                    end = children.find("/",match.end())
+                    if end == -1:
+                        end = len(children)
+                    backup_item = root + children[0:end]
                     if backup_item not in item_set:
                         date_str.append((prefix,backup_item))
                         item_set.add(backup_item)
                     break
-    os.system("rm containDate.tmp")
+    #os.system("rm {f}".format(f=tmp_file)
     if len(date_str) > 0:
         #print "[DEBUG] total backup item count : {0}".format(len(date_str))
         return date_str
@@ -53,6 +61,8 @@ def containDate(d):
         print "[ERROR] {0} doesn't include date subdir\n".format(root)
         return False
 
+
+containDate.index = 0
 
 
 def daterange(start_date, end_date):
