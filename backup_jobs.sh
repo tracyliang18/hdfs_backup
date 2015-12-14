@@ -5,7 +5,7 @@ three_month_backup_list=("source.comments" "source.tracking" "source.mobile" "in
 #backup "source.mysql-bak" under /production/ in hdfs,  keep one week data
 one_week_backup_list=("source.mysql-bak")
 
-if [ ! -d "out"]; then
+if [ ! -d "out" ]; then
   mkdir out
 fi
 
