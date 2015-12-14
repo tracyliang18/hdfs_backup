@@ -20,7 +20,7 @@ def containDate(d):
         judge whether directory d contain date-format subdir, and return all date-format sub-directorys or subfile in a list
     """
     containDate.index += 1
-    tmp_file = "containDate.tmp" + str(containDate.index) 
+    tmp_file = "containDate.tmp" + str(containDate.index)
     if not d.endswith("/"):
         d += "/"
     root = d
@@ -204,7 +204,7 @@ def backup_given_date(backup_type,src_dir,remote_dir,start_date_str,end_date_str
 
     if gen_delete_script and len(success_list) > 0:
 
-        with open("delete_script_{0}_{1}.sh".format(backup_type,today),"w") as f:
+        with open("./delete_script/delete_script_{0}_{1}.sh".format(backup_type,today),"w") as f:
             cmd_format = "hadoop dfs -rmr {filename}"
             for fname in success_list:
                 f.write(cmd_format.format(filename=fname + "\n"))

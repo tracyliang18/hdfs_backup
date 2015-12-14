@@ -1,0 +1,12 @@
+{
+  "uploadOnSave": false,
+  "hostname": "10.0.2.112",
+  "port": "22",
+  "target": "/var/lib/hadoop-hdfs/ljj/hdfs_backup_v3",
+  "ignore": [
+    ".git/**"
+  ],
+  "username": "hdfs",
+  "password": "xuetangX@2014",
+  "transport": "scp"
+}

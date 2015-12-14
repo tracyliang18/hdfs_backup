@@ -14,7 +14,7 @@
 
         "datas" : {
           "hdfs-src" : "/production/datas/",
-          "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas",
+          "remote" : "root@10.0.0.147:/root/backup/hdfs/production/datas"
         },
 
 
@@ -38,4 +38,5 @@
           "hdfs-src" : "/production/opjobs",
           "remote" : "root@10.0.0.147:/root/backup/hdfs/production/opjobs/"
         }
+    }
 }

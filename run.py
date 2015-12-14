@@ -1,6 +1,7 @@
 from optparse import OptionParser
+import os
 
-#from 
+#from
 parser = OptionParser()
 parser.add_option("-s", "--start", dest="start_date_str",default=None,
                   help="backup start date, in %Y-%m-%d format", metavar="YYYY-mm-dd")
@@ -19,7 +20,7 @@ parser.add_option("-t", "--type", dest="backup_type", default=None,
 parser.add_option("-d", "--delete", action="store_true", dest="gen_delete_script",default=False,
                 help="switch on generate delte script")
 
-from backup import backup_given_date 
+from backup import backup_given_date
 
 
 
@@ -37,7 +38,7 @@ def loop_through_dict(prev_key,res, conf):
     for key in conf:
         if key != "hdfs-src" and key != "remote":
             loop_through_dict(prev_key +"." + key, res, conf[key])
-    
+
 
 
 def main():
@@ -55,12 +56,12 @@ def main():
         backup_type = {}
         try:
             key_strings = options.backup_type.split('.')
-            expression = "conf[\""+ "\"][\"".join(key_strings)  + "\"]" 
+            expression = "conf[\""+ "\"][\"".join(key_strings)  + "\"]"
             #print expression
             backup_type = eval(expression)
         except:
             print "backup_type parse error"
-       
+
         backup_list = []
         loop_through_dict(options.backup_type,backup_list, backup_type)
 
@@ -74,7 +75,7 @@ def main():
 
         print "-------------------------------"
 
-    #parse keep 
+    #parse keep
     if options.keep:
     	keep = int(options.keep)
         if keep <= 0:
@@ -86,9 +87,9 @@ def main():
             start_date_str = None
             print "keep the most recent {1} days files backup the file before {0}(including)".format(end_date_str,keep)
 
-    #parse start date and end date	
-    else:            
-            
+    #parse start date and end date
+    else:
+
         start_date_str = options.start_date_str
         end_date_str = options.end_date_str
         if start_date_str and not date_re.search(start_date_str):
@@ -112,19 +113,21 @@ def main():
                 if start_date > end_date:
                     print "start date should be less than or equal the end date"
                     exit(-1)
-        
+
     #print options
     #print args
 
-    #backup_given_date(	
+    #backup_given_date(
     for e in backup_list:
         backup_type_str = e[0]
         backup_type = e[1]
         print "backuping ",backup_type_str,"----------------"
         #print "\t",backup_type
         backup_given_date(backup_type_str, backup_type["hdfs-src"], backup_type["remote"], start_date_str, end_date_str, options.gen_delete_script)
-        print "---------------------------------------------" 
+        print "---------------------------------------------"
 
 
 if __name__ == "__main__":
+    if  not os.path.exists("./delete_script"):
+        os.system("mkdir delete_script")
     main()
