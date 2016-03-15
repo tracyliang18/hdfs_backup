@@ -1,0 +1,10 @@
+{
+    "all" : {
+        "source" : {
+          "tracking" : {
+            "hdfs-src" : "/path/to/hdfs_dir",
+            "remote" : "ip:/path/to/directory" 
+          }
+		}
+	}
+}
